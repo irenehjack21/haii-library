@@ -4,110 +4,427 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HAII Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f7f6f3;
-      --card: #ffffff;
-      --text: #1f2328;
-      --muted: #5f6670;
-      --accent: #4a4ae0;
-      --border: #e3e1dc;
+      --page: #edf3f0;
+      --panel: #ffffff;
+      --text: #1a1a1a;
+      --muted: #5c5f66;
+      --faint: #7d8f8a;
+      --blue: #2c7a7b;
+      --blue-soft: #e7f3f1;
+      --beige: #edf3ee;
+      --line: #d6e5df;
+      --serif: "Instrument Serif", Georgia, serif;
+      --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
+      background: var(--page);
       color: var(--text);
-      line-height: 1.5;
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.7;
     }
-    header {
+    a { color: inherit; }
+
+    /* ---------- Layout ---------- */
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 24px 24px 48px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 1px 2px rgba(20, 30, 60, 0.04);
+      margin-bottom: 24px;
+      padding: 72px 72px;
+      scroll-margin-top: 24px;
+    }
+
+    /* ---------- Floating nav ---------- */
+    .brand {
+      position: absolute;
+      top: 56px;
+      left: 80px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--blue);
+      text-decoration: none;
+      line-height: 1.1;
+      z-index: 5;
+    }
+    .brand svg { width: 34px; height: 34px; }
+    .brand span { font-family: var(--serif); font-size: 17px; }
+    .brand em { display: block; }
+    nav {
+      position: fixed;
+      top: 32px;
+      right: max(40px, calc((100vw - 1240px) / 2 + 56px));
+      z-index: 10;
+      display: flex;
+      gap: 4px;
+      padding: 6px;
+      background: #fff;
+      border: 1px solid var(--text);
+      border-radius: 999px;
+      box-shadow: 0 6px 24px rgba(20, 30, 60, 0.08);
+    }
+    nav a {
+      padding: 8px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    nav a:hover, nav a.active { background: var(--beige); }
+    nav a.cta { background: var(--blue); color: #fff; font-weight: 500; }
+    nav a.cta:hover { background: #215d5d; }
+
+    /* ---------- Type ---------- */
+    .display {
+      font-family: var(--serif);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin: 0;
+    }
+    .blue { color: var(--blue); }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 28px;
+    }
+    .eyebrow b { color: var(--blue); font-weight: 500; }
+    .eyebrow i { width: 28px; height: 1px; background: var(--faint); }
+
+    /* ---------- Buttons ---------- */
+    .buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 22px;
+      border-radius: 999px;
+      border: 1px solid var(--text);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 500;
+      background: #fff;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.2s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .btn.primary:hover { background: #1f5f60; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 780px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 3rem 1rem 1.5rem;
     }
-    header h1 { margin: 0; font-size: 2.4rem; letter-spacing: -0.02em; }
-    header p { margin: 0.4rem 0 0; color: var(--muted); }
-    .tagline { font-weight: 600; color: var(--accent); }
-    main { max-width: 960px; margin: 0 auto; padding: 0 1rem 3rem; }
+    .hero h1 { font-size: clamp(56px, 8vw, 104px); }
+    .typing-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.08em;
+      min-height: 2.2em;
+    }
+    .typing-line {
+      display: block;
+      white-space: nowrap;
+      min-height: 1em;
+      position: relative;
+      padding-right: 0.1em;
+    }
+    .accent {
+      color: var(--blue);
+    }
+    .terminal-period {
+      color: var(--blue);
+    }
+    .caret {
+      display: inline-block;
+      width: 0.08em;
+      height: 0.8em;
+      background: var(--blue);
+      animation: blink 0.9s steps(1) infinite;
+      vertical-align: middle;
+      margin-left: 0.04em;
+      transform: translateY(-0.04em);
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    .hero p {
+      max-width: 460px;
+      margin: 36px auto 40px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .hero .buttons { justify-content: center; }
+    .scroll {
+      margin-top: 88px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--faint);
+      text-decoration: none;
+    }
+    .dots {
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      opacity: 0.55;
+      pointer-events: none;
+      background-image: radial-gradient(circle, #1a1a1a 1px, transparent 1.4px);
+      background-size: 9px 9px;
+      -webkit-mask-image: radial-gradient(circle, #000 20%, transparent 68%);
+              mask-image: radial-gradient(circle, #000 20%, transparent 68%);
+    }
+    .dots.left { left: -110px; top: 34%; }
+    .dots.right { right: -120px; top: 22%; background-image: radial-gradient(circle, var(--blue) 1px, transparent 1.4px); }
+
+    /* ---------- Library ---------- */
+    .library-head {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 40px;
+    }
+    .library-head h2 { font-size: clamp(44px, 5vw, 64px); }
+    .library-head p { margin: 0; color: var(--muted); }
     .controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 32px;
     }
     .controls input {
-      flex: 1 1 260px;
-      padding: 0.6rem 0.8rem;
-      font-size: 1rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-    .filters { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .filters button {
-      padding: 0.45rem 0.85rem;
-      border: 1px solid var(--border);
+      flex: 0 1 340px;
+      padding: 10px 18px;
+      font: inherit;
+      font-size: 14px;
+      border: 1px solid var(--text);
       border-radius: 999px;
-      background: var(--card);
+      outline: none;
+    }
+    .controls input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+    .filters { display: flex; flex-wrap: wrap; gap: 6px; }
+    .filters button {
+      padding: 8px 16px;
+      font: inherit;
+      font-size: 13px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: transparent;
       cursor: pointer;
-      font-size: 0.9rem;
     }
-    .filters button.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
-    .count { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    .filters button:hover { background: var(--beige); }
+    .filters button.active { background: var(--blue); color: #fff; }
+    .count { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 20px; }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
     }
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.1rem 1.2rem;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 14px;
+      padding: 26px 26px 22px;
+      border: 1px solid #d6e2ff;
+      border-radius: 14px;
+      background: #fff;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .card h2 { margin: 0; font-size: 1.1rem; }
-    .card h2 a { color: var(--text); text-decoration: none; }
-    .card h2 a:hover { color: var(--accent); text-decoration: underline; }
-    .meta { display: flex; gap: 0.5rem; align-items: center; font-size: 0.8rem; color: var(--muted); }
-    .badge {
-      background: #ecebff;
-      color: var(--accent);
-      padding: 0.1rem 0.55rem;
-      border-radius: 999px;
+    .card:hover { transform: translateY(-3px) rotate(-0.3deg); box-shadow: 0 12px 30px rgba(10, 92, 255, 0.08); }
+    .tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
       font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--faint);
     }
-    .card p { margin: 0; font-size: 0.95rem; }
-    .notes {
-      border-left: 3px solid var(--accent);
-      padding-left: 0.6rem;
-      color: var(--muted);
-      font-style: italic;
+    .tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+    .tag i { width: 18px; height: 1px; background: var(--faint); }
+    .tag .year { margin-left: auto; font-weight: 400; }
+    .card h3 { font-family: var(--serif); font-weight: 400; font-size: 30px; line-height: 1.05; margin: 0; letter-spacing: -0.01em; }
+    .card h3 a { text-decoration: none; }
+    .card h3 a:hover { color: var(--blue); }
+    .card p { margin: 0; font-size: 13.5px; color: var(--muted); }
+    .card .notes {
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--blue);
+      border-radius: 6px;
+      padding: 12px 14px;
+      color: var(--text);
     }
-    .message { text-align: center; color: var(--muted); padding: 2rem 0; }
+    .card .open {
+      margin-top: auto;
+      padding-top: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .card .open:hover { text-decoration: underline; }
+    .message { text-align: center; color: var(--faint); padding: 32px 0 8px; }
+
+    /* ---------- About ---------- */
+    .about { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .about h2 { font-size: clamp(44px, 5vw, 64px); }
+    .about p { margin: 0 0 18px; }
+    .quote {
+      margin-top: 36px;
+      padding: 26px 28px;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--blue);
+      border-radius: 8px;
+    }
+    .quote mark { background: var(--blue-soft); font-weight: 600; padding: 2px 4px; }
+    .topics { display: grid; gap: 16px; }
+    .topic {
+      padding: 22px 24px;
+      border: 1px solid #d6e2ff;
+      border-radius: 14px;
+    }
+    .topic:nth-child(2) { margin-left: 48px; }
+    .topic h3 { font-family: var(--serif); font-weight: 400; font-size: 28px; margin: 12px 0 6px; }
+    .topic p { margin: 0; font-size: 13.5px; color: var(--muted); }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--faint);
+      padding: 16px 0 8px;
+    }
+
+    /* ---------- Small screens ---------- */
+    @media (max-width: 860px) {
+      .panel { padding: 48px 24px; }
+      .brand { top: 28px; left: 32px; }
+      nav { top: auto; bottom: 16px; right: 50%; transform: translateX(50%); }
+      nav a { padding: 8px 12px; font-size: 13px; }
+      .hero { min-height: 640px; }
+      .library-head, .about { grid-template-columns: 1fr; gap: 24px; }
+      .topic:nth-child(2) { margin-left: 0; }
+      .dots { display: none; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>HAII Library</h1>
-    <p>A curated library of resources on Human-AI Interaction, behavioral psychology, and decision-making.</p>
-    <p class="tagline">Where Psychology meets Technology</p>
-  </header>
+  <nav aria-label="Main">
+    <a href="#home" data-section="home">Home</a>
+    <a href="#library" data-section="library">Library</a>
+    <a href="#about" data-section="about">About</a>
+    <a href="#library" class="cta">Browse</a>
+  </nav>
 
-  <main>
-    <div class="controls">
-      <input id="search" type="search" placeholder="Search titles, descriptions, notes..." aria-label="Search resources">
-      <div class="filters" id="filters"></div>
-    </div>
-    <div class="count" id="count"></div>
-    <div class="grid" id="grid"></div>
-    <div class="message" id="message">Loading resources...</div>
-  </main>
+  <div class="wrap">
+    <!-- Hero -->
+    <section class="panel hero" id="home">
+      <a class="brand" href="#home" aria-label="HAII Library home">
+        <span><em>The HAII</em>Library</span>
+      </a>
+      <div class="dots left"></div>
+      <div class="dots right"></div>
+
+      <h1 class="display typing-wrap" aria-live="polite">
+        <span class="typing-line" id="typewriter-line-1"></span>
+        <span class="typing-line" id="typewriter-line-2"></span>
+      </h1>
+      <p>A library of resources on Human-AI Interaction.</p>
+      <div class="buttons">
+        <a class="btn primary" href="#library">Browse the library ↗</a>
+        <a class="btn" href="#about">About the project ↗</a>
+      </div>
+      <a class="scroll" href="#library">SCROLL TO DISCOVER ↓</a>
+    </section>
+
+    <!-- Library -->
+    <section class="panel" id="library">
+      <div class="eyebrow"><b>01</b><i></i>Library</div>
+      <div class="library-head">
+        <h2 class="display">Research, reading<br>and <span class="blue">tools</span>.</h2>
+        <p>Papers, books, articles and tools on how people think, decide and work alongside AI, each with a short summary and personal notes.</p>
+      </div>
+      <div class="controls">
+        <input id="search" type="search" placeholder="Search the library..." aria-label="Search resources">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="count" id="count"></div>
+      <div class="grid" id="grid"></div>
+      <div class="message" id="message">Loading resources...</div>
+    </section>
+
+    <!-- About -->
+    <section class="panel" id="about">
+      <div class="about">
+        <div>
+          <div class="eyebrow"><b>02</b><i></i>About</div>
+          <h2 class="display">Understanding how<br><span class="blue">AI shapes us</span>.</h2>
+          <p style="margin-top: 32px;">AI is changing how we think, decide and relate to one another. Making sense of that takes more than technology: it needs psychology, behavioral science and design.</p>
+          <p>This library gathers the resources that help connect those fields, in one place.</p>
+          <div class="quote">
+            <mark>The HAII Library</mark> collects research and reading on Human-AI Interaction, with notes on what matters and why.
+          </div>
+
+          <div class="quote" style="margin-top: 20px;">
+            <strong>Why HAII is relevant for tech companies:</strong>
+            <p style="margin-top: 14px; margin-bottom: 0;">AI systems don't do anything in isolation, they do things through people. A model can be more capable on benchmarks yet produce worse outcomes because people misunderstand what it's doing, over-trust it, under-trust it, or can't steer it.</p>
+            <p style="margin-top: 14px; margin-bottom: 0;">A lot of the value and a lot of the harm lives in the interaction layer, not the weights. Questions like how people calibrate trust, when they defer to a system versus override it, how explanations change behavior (often not in the direction you'd hope), and how automation reshapes skill over time are not soft add-ons. They determine whether a capable system actually helps.</p>
+          </div>
+        </div>
+        <div class="topics">
+          <div class="topic">
+            <div class="tag">Human-AI Interaction</div>
+            <h3>How we work with AI</h3>
+            <p>Design, trust, and collaboration between people and intelligent systems.</p>
+          </div>
+          <div class="topic">
+            <div class="tag">Behavioral psychology</div>
+            <h3>Why we act as we do</h3>
+            <p>Biases, habits and the mental models people bring to technology.</p>
+          </div>
+          <div class="topic">
+            <div class="tag">Decision-making</div>
+            <h3>How we choose</h3>
+            <p>Judgment under uncertainty, and how AI changes the way we decide.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>HAII Library · Where psychology meets technology</footer>
+  </div>
 
   <script>
     const CATEGORIES = ["All", "Research", "Article", "Book", "Video", "Paper", "Tool"];
@@ -145,16 +462,90 @@
 
       grid.innerHTML = visible.map(r => `
         <article class="card">
-          <div class="meta">
-            <span class="badge">${escapeHtml(r.category)}</span>
-            ${r.datePublished ? `<span>${escapeHtml(r.datePublished)}</span>` : ""}
+          <div class="tag"><i></i>${escapeHtml(r.category)}
+            ${r.datePublished ? `<span class="year">${escapeHtml(r.datePublished)}</span>` : ""}
           </div>
-          <h2><a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.title)}</a></h2>
+          <h3><a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.title)}</a></h3>
           ${r.description ? `<p>${escapeHtml(r.description)}</p>` : ""}
           ${r.notes ? `<p class="notes">${escapeHtml(r.notes)}</p>` : ""}
+          <a class="open" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Open resource ↗</a>
         </article>
       `).join("");
     }
+
+    const phrases = [
+      { line1: "Where psychology", line2: "meets technology.", accent1: "psychology", accent2: "technology" },
+      { line1: "Where humans", line2: "meet AI.", accent1: "humans", accent2: "AI" }
+    ];
+
+    const line1El = document.getElementById("typewriter-line-1");
+    const line2El = document.getElementById("typewriter-line-2");
+    const escapeRegExp = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    function renderTypingLine(el, text, accentWord, length, showCaret = true) {
+      const visibleText = text.slice(0, length);
+      const escaped = escapeHtml(visibleText);
+      let highlighted = escaped.replace(
+        new RegExp(escapeRegExp(accentWord), "gi"),
+        match => `<span class="accent">${match}</span>`
+      );
+      if (visibleText.endsWith('.')) {
+        highlighted = highlighted.replace(/\.$/, '<span class="terminal-period">.</span>');
+      }
+      el.innerHTML = `${highlighted || "&nbsp;"}${showCaret ? '<span class="caret" aria-hidden="true"></span>' : ''}`;
+    }
+
+    let phraseIndex = 0;
+    let activeLine = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function typeLoop() {
+      const current = phrases[phraseIndex];
+      const lines = [
+        { el: line1El, text: current.line1, accent: current.accent1 },
+        { el: line2El, text: current.line2, accent: current.accent2 }
+      ];
+
+      const active = lines[activeLine];
+
+      if (!deleting) {
+        charIndex += 1;
+        renderTypingLine(active.el, active.text, active.accent, charIndex);
+
+        if (charIndex >= active.text.length) {
+          renderTypingLine(active.el, active.text, active.accent, active.text.length, false);
+          if (activeLine === 0) {
+            activeLine = 1;
+            charIndex = 0;
+            setTimeout(typeLoop, 420);
+            return;
+          }
+
+          deleting = true;
+          setTimeout(typeLoop, 1400);
+          return;
+        }
+      } else {
+        charIndex -= 1;
+        renderTypingLine(active.el, active.text, active.accent, charIndex, true);
+
+        if (charIndex <= 0) {
+          deleting = false;
+          activeLine = 0;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          line1El.innerHTML = "&nbsp;";
+          line2El.innerHTML = "&nbsp;";
+          setTimeout(typeLoop, 180);
+          return;
+        }
+      }
+
+      const delay = deleting ? 36 : 80;
+      setTimeout(typeLoop, delay);
+    }
+
+    typeLoop();
 
     filters.addEventListener("click", e => {
       const cat = e.target.dataset.cat;
@@ -164,6 +555,16 @@
       render();
     });
     search.addEventListener("input", render);
+
+    // Highlight the nav item for the section currently on screen
+    const navLinks = document.querySelectorAll("nav a[data-section]");
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(a => a.classList.toggle("active", a.dataset.section === entry.target.id));
+      });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    ["home", "library", "about"].forEach(id => sectionObserver.observe(document.getElementById(id)));
 
     renderFilters();
     fetch("resources.json")
