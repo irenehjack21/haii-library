@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAII Library</title>
+  <style>
+    :root {
+      --bg: #f7f6f3;
+      --card: #ffffff;
+      --text: #1f2328;
+      --muted: #5f6670;
+      --accent: #4a4ae0;
+      --border: #e3e1dc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      text-align: center;
+      padding: 3rem 1rem 1.5rem;
+    }
+    header h1 { margin: 0; font-size: 2.4rem; letter-spacing: -0.02em; }
+    header p { margin: 0.4rem 0 0; color: var(--muted); }
+    .tagline { font-weight: 600; color: var(--accent); }
+    main { max-width: 960px; margin: 0 auto; padding: 0 1rem 3rem; }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .controls input {
+      flex: 1 1 260px;
+      padding: 0.6rem 0.8rem;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .filters { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .filters button {
+      padding: 0.45rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--card);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .filters button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .count { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .card h2 { margin: 0; font-size: 1.1rem; }
+    .card h2 a { color: var(--text); text-decoration: none; }
+    .card h2 a:hover { color: var(--accent); text-decoration: underline; }
+    .meta { display: flex; gap: 0.5rem; align-items: center; font-size: 0.8rem; color: var(--muted); }
+    .badge {
+      background: #ecebff;
+      color: var(--accent);
+      padding: 0.1rem 0.55rem;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .card p { margin: 0; font-size: 0.95rem; }
+    .notes {
+      border-left: 3px solid var(--accent);
+      padding-left: 0.6rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .message { text-align: center; color: var(--muted); padding: 2rem 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HAII Library</h1>
+    <p>A curated library of resources on Human-AI Interaction, behavioral psychology, and decision-making.</p>
+    <p class="tagline">Where Psychology meets Technology</p>
+  </header>
+
+  <main>
+    <div class="controls">
+      <input id="search" type="search" placeholder="Search titles, descriptions, notes..." aria-label="Search resources">
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+    <div class="message" id="message">Loading resources...</div>
+  </main>
+
+  <script>
+    const CATEGORIES = ["All", "Research", "Article", "Book", "Video", "Paper", "Tool"];
+    let resources = [];
+    let activeCategory = "All";
+
+    const grid = document.getElementById("grid");
+    const message = document.getElementById("message");
+    const count = document.getElementById("count");
+    const search = document.getElementById("search");
+    const filters = document.getElementById("filters");
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[c]);
+    }
+
+    function renderFilters() {
+      filters.innerHTML = CATEGORIES.map(cat =>
+        `<button class="${cat === activeCategory ? "active" : ""}" data-cat="${cat}">${cat}</button>`
+      ).join("");
+    }
+
+    function render() {
+      const q = search.value.trim().toLowerCase();
+      const visible = resources
+        .filter(r => activeCategory === "All" || r.category === activeCategory)
+        .filter(r => !q || [r.title, r.description, r.notes, r.category]
+          .some(f => String(f ?? "").toLowerCase().includes(q)))
+        .sort((a, b) => String(b.dateAdded).localeCompare(String(a.dateAdded)));
+
+      count.textContent = `${visible.length} of ${resources.length} resources`;
+      message.textContent = visible.length ? "" : "No resources match your search.";
+
+      grid.innerHTML = visible.map(r => `
+        <article class="card">
+          <div class="meta">
+            <span class="badge">${escapeHtml(r.category)}</span>
+            ${r.datePublished ? `<span>${escapeHtml(r.datePublished)}</span>` : ""}
+          </div>
+          <h2><a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.title)}</a></h2>
+          ${r.description ? `<p>${escapeHtml(r.description)}</p>` : ""}
+          ${r.notes ? `<p class="notes">${escapeHtml(r.notes)}</p>` : ""}
+        </article>
+      `).join("");
+    }
+
+    filters.addEventListener("click", e => {
+      const cat = e.target.dataset.cat;
+      if (!cat) return;
+      activeCategory = cat;
+      renderFilters();
+      render();
+    });
+    search.addEventListener("input", render);
+
+    renderFilters();
+    fetch("resources.json")
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        resources = Array.isArray(data) ? data : [];
+        render();
+      })
+      .catch(err => {
+        message.textContent = `Could not load resources.json (${err.message}).`;
+      });
+  </script>
+</body>
+</html>

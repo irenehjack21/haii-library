@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "Guidelines for Human-AI Interaction",
+    "url": "https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/",
+    "category": "Paper",
+    "description": "Amershi et al. (CHI 2019) propose 18 validated design guidelines for how AI systems should behave during interaction with people.",
+    "notes": "",
+    "dateAdded": "2026-09-25",
+    "datePublished": "2019"
+  },
+  {
+    "id": 2,
+    "title": "Thinking, Fast and Slow",
+    "url": "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow",
+    "category": "Book",
+    "description": "Daniel Kahneman on the two systems of thought and the cognitive biases that shape judgment and decision-making.",
+    "notes": "",
+    "dateAdded": "2026-09-25",
+    "datePublished": "2011"
+  },
+  {
+    "id": 3,
+    "title": "People + AI Guidebook",
+    "url": "https://pair.withgoogle.com/guidebook/",
+    "category": "Tool",
+    "description": "Google PAIR's practical guide for designing human-centered AI products, covering mental models, trust, feedback and errors.",
+    "notes": "",
+    "dateAdded": "2026-09-25",
+    "datePublished": "2019"
+  }
+]
