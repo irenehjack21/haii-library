@@ -28,5 +28,35 @@
     "notes": "",
     "dateAdded": "2026-09-25",
     "datePublished": "2019"
+  },
+  {
+    "id": 4,
+    "title": "APA Center for Behavioral Science and AI",
+    "url": "https://www.centerforbehavioralscience.ai/",
+    "category": "Research",
+    "description": "A new American Psychological Association initiative bringing stakeholders together to build human-centered AI, with evidence-based guidance and actionable frameworks for product decisions. Built on three commitments (ethics and privacy, health and well-being, equity and bias reduction), starting with youth digital well-being.",
+    "notes": "",
+    "dateAdded": "2026-09-25",
+    "datePublished": "2026"
+  },
+  {
+    "id": 5,
+    "title": "Robert Sapolsky: From Slime Mold to Superintelligence",
+    "url": "https://www.youtube.com/watch?v=2FI8b0xAFxw",
+    "category": "Video",
+    "description": "Neuroscientist Robert Sapolsky in conversation with The Behavioral AI Institute, moving from simple biological systems to superintelligence and what behavioral science brings to thinking about AI.",
+    "notes": "",
+    "dateAdded": "2026-09-25",
+    "datePublished": ""
+  },
+  {
+    "id": 6,
+    "title": "Appropriate Reliance on Generative AI: Research Synthesis",
+    "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2024/03/GenAI_AppropriateReliance_Published2024-3-21.pdf",
+    "category": "Research",
+    "description": "Passi, Dhanorkar and Vorvoreanu (Microsoft Research, 2024) synthesize around 50 papers on overreliance on generative AI. Appropriate reliance means accepting correct AI outputs and rejecting incorrect ones; the report covers the factors that drive overreliance and strategies to mitigate it.",
+    "notes": "",
+    "dateAdded": "2026-09-25",
+    "datePublished": "2024"
   }
 ]
