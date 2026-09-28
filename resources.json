@@ -58,5 +58,15 @@
     "notes": "",
     "dateAdded": "2026-09-25",
     "datePublished": "2024"
+  },
+  {
+    "id": 7,
+    "title": "Relying on the Unreliable: The Impact of Language Models’ Reluctance to Express Uncertainty",
+    "url": "https://aclanthology.org/2024.acl-long.198/",
+    "category": "Paper",
+    "description": "Kaitlyn Zhou, Jena D. Hwang, Xiang Ren, and Maarten Sap (ACL 2024) study how language models communicate uncertainty and how this affects user reliance. They find models often remain overconfident, while users rely heavily on their answers even when uncertainty is signaled.",
+    "notes": "",
+    "dateAdded": "2026-09-28",
+    "datePublished": "2024"
   }
 ]
