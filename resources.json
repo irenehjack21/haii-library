@@ -68,5 +68,15 @@
     "notes": "",
     "dateAdded": "2026-09-28",
     "datePublished": "2024"
+  },
+  {
+    "id": 8,
+    "title": "Advancing Social Intelligence in AI Agents: Technical Challenges and Open Questions",
+    "url": "https://arxiv.org/search/?query=%22Advancing+Social+Intelligence+in+AI+Agents%3A+Technical+Challenges+and+Open+Questions%22&searchtype=all&abstracts=show&order=-announced_date_first&size=50",
+    "category": "Paper",
+    "description": "Leena Mathur, Paul Pu Liang, and Louis-Philippe Morency discuss the technical challenges and open questions in building socially intelligent AI agents, from perception and reasoning to interaction and evaluation.",
+    "notes": "",
+    "dateAdded": "2026-09-30",
+    "datePublished": "2024"
   }
 ]
